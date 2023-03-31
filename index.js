@@ -1,16 +1,29 @@
-const app = require('express')();
+const express = require('express');
 
-const port = process.env.PORT || 3000;
+const app = express();
 
-app.listen(port, () => {
-    console.log('Connect 4 Calculator is running on port', port);
+app.listen(3000, () => {
+    console.log('Server started on port 3000');
 });
 
 app.get('/', (req, res) => {
-    res.send('Server is running');
+    res.send('Hello World!');
 });
 
-app.get('/move', (req, res) => {
-    const board = req.query.b;
-    res.send('Board: ' + board);
-});
+grille = []
+const lines = 6;
+const colums = 7;
+
+
+const convertEntry = (string) => {
+    let i = 0;
+    let tmp = [];
+    for (i in colums){
+        tmp = string.splice(0,6)
+        tmp = tmp.split(",")
+        grille[i] = tmp;
+    }
+    return grille;
+}
+
+convertEntry("m00000h00000mm0000hmh000h00000h00000000000");
