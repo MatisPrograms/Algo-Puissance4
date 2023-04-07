@@ -28,7 +28,7 @@ app.get('/move', (req, res) => {
     printBoard(board);
 
     res.send({
-        column: 4
+        column: monteCarlo.calculateNextMove(board)
     });
 });
 
