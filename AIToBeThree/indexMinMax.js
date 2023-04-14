@@ -1,5 +1,5 @@
 const app = require('express')();
-const {checkDraw, checkWinner} = require('../boardUtils');
+const {checkDraw, checkWinner, printBoard} = require('../boardUtils');
 
 const maxSeconds = 2;
 
@@ -30,9 +30,10 @@ app.get('/move', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     if (!parseUrlBoard(board, req.query.b)) res.status(400).json({error: 'Invalid board'});
 
+    printBoard(board)
     res.status(200).send({
         //TODO
-        column: minmax.computeMove(),
+        column: minmax.computeMove(board),
     });
 });
 

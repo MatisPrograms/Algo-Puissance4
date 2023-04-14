@@ -78,6 +78,7 @@ class AI {
   // If it's between 26 and 28 and the game has not been resolved, the endMidGame method is called.
   // Otherwise, the endGame method is called.
   computeMove = () => {
+
     if (this.position.nbMoves < 7) {
       return this.earlyGame();
     }
@@ -89,6 +90,7 @@ class AI {
     }
     return this.endGame();
   };
+
 
   // The nextMove method is called after each move made by the opponent
   // to update the game state and compute the AI's next move.
@@ -265,7 +267,9 @@ const nextMove = (lastMove) => new Promise((resolve) => {
 const hydrate = (state) => ai.hydrate(state);
 
 module.exports = AI;
-
+function printBoard(board) {
+  console.table(board[0].map((col, i) => board.map(row => row[i])).reverse());
+}
 /*
 module.exports = {
   nextMove,
