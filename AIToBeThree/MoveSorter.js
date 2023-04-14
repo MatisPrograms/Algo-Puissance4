@@ -1,4 +1,3 @@
-/* eslint-disable no-plusplus */
 class MoveSorter {
   constructor(width) {
     this.max = Infinity;

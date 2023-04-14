@@ -1,5 +1,4 @@
 /* eslint-disable no-bitwise */
-/* eslint-disable no-plusplus */
 const Position = require('./Position');
 const MoveSorter = require('./MoveSorter');
 const TranspositionTable = require('./TranspositionTable');

@@ -1,4 +1,3 @@
-/* eslint-disable no-plusplus */
 /* eslint-disable no-bitwise */
 class Position {
   #WIDTH = 7;
