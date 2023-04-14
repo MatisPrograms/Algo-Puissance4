@@ -5,21 +5,17 @@ const MoveSorter = require('./MoveSorter');
 const TranspositionTable = require('./TranspositionTable');
 const StandardGrid = require('./StandardGrid');
 const {
-  bestSecondPlayerMoves,
-  bestStartingPlayerMoves,
+  bestSecondPlayerMoves
 } = require('./StartingMoves');
 
 class AI {
+
   #columnOrder = ['3', '2', '4', '1', '5', '0', '6'];
 
   #transTable;
-
-  constructor(AIPlays) {
-    if (AIPlays !== 1 && AIPlays !== 2) {
-      throw new Error('AI play must be either 1 or 2');
-    }
-    this.AIPlays = AIPlays;
-    this.enemyNumber = AIPlays === 1 ? 2 : 1;
+  constructor() {
+    this.AIPlays = 2;
+    this.enemyNumber = 1;
     this.position = new Position();
     this.standardGrid = new StandardGrid();
     this.playedMoves = '';
@@ -109,12 +105,11 @@ class AI {
       return [3, row];
     }
 
-    const bestMoves = this.AIPlays === 1 ? bestStartingPlayerMoves : bestSecondPlayerMoves;
+    const bestMoves =  bestSecondPlayerMoves;
 
     const bestMove = bestMoves.find((move) => {
       const previousMoves = move[0];
-      if (previousMoves === this.playedMoves) return true;
-      return false;
+      return previousMoves === this.playedMoves;
     });
 
     if (bestMove) {
@@ -130,8 +125,8 @@ class AI {
       const pos = new Position();
       pos.playSeries(previousMoves);
       const symetricMove = JSON.stringify(pos.getSymmetric());
-      if (symetricMove === stringifiedBitmap) return true;
-      return false;
+      return symetricMove === stringifiedBitmap;
+
     });
 
     if (bestMoveSymetric) {
@@ -263,11 +258,6 @@ class AI {
 }
 
 let ai;
-const setup = (AIplays) => {
-  ai = new AI(AIplays);
-  return true;
-};
-
 const nextMove = (lastMove) => new Promise((resolve) => {
   resolve(ai.nextMove(lastMove));
 });
@@ -275,7 +265,6 @@ const nextMove = (lastMove) => new Promise((resolve) => {
 const hydrate = (state) => ai.hydrate(state);
 
 module.exports = {
-  setup,
   nextMove,
   hydrate,
   AI,

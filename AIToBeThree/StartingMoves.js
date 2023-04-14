@@ -1,15 +1,3 @@
-const bestStartingPlayerMoves = [
-  ['31', '1'],
-  ['32', '5'],
-  ['3110', '4'],
-  ['3112', '1'],
-  ['3252', '2'],
-  ['3254', '4'],
-  ['3255', '6'],
-  ['3256', '5'],
-  ['3330', '4'],
-];
-
 const bestSecondPlayerMoves = [
   ['1', '2'],
   ['036', '2'],
@@ -25,6 +13,5 @@ const bestSecondPlayerMoves = [
 ];
 
 module.exports = {
-  bestStartingPlayerMoves,
-  bestSecondPlayerMoves,
+  bestSecondPlayerMoves
 };
