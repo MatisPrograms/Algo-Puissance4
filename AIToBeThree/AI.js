@@ -95,9 +95,7 @@ class AI {
   // The nextMove method is called after each move made by the opponent
   // to update the game state and compute the AI's next move.
   nextMove = (lastMove) => {
-    if (this.AIPlays === 2 || this.position.nbMoves > 0) {
-      this.addEnemyMove(lastMove);
-    }
+    this.addEnemyMove(lastMove);
     return this.computeMove();
   };
 
