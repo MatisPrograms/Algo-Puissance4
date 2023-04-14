@@ -32,7 +32,7 @@ app.get('/move', (req, res) => {
 
     res.status(200).send({
         //TODO
-        column: minmax.calculateNextMove(board)
+        column: minmax.computeMove(),
     });
 });
 

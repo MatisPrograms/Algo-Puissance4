@@ -264,8 +264,11 @@ const nextMove = (lastMove) => new Promise((resolve) => {
 
 const hydrate = (state) => ai.hydrate(state);
 
+module.exports = AI;
+
+/*
 module.exports = {
   nextMove,
   hydrate,
   AI,
-};
+};*/
