@@ -32,7 +32,6 @@ app.get('/move', (req, res) => {
 
     printBoard(board)
     res.status(200).send({
-        //TODO
         column: minmax.computeMove(board),
     });
 });

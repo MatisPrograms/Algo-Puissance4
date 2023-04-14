@@ -53,14 +53,14 @@ class AI {
   };
 
   //The addEnemyMove method is used to add the opponent's move to the game state
-  addEnemyMove = (moveArray) => {
+ /* addEnemyMove = (moveArray) => {
     const move = { x: moveArray[0], y: moveArray[1] };
     const isValid = this.standardGrid.isValid(move);
     if (!isValid) throw new Error(`Enemy move is invalid ${move}`);
     this.standardGrid.add({ ...move, playerNumber: this.enemyNumber });
     this.position.playCol(move.x);
     this.playedMoves += move.x;
-  };
+  };*/
 
   //The addAIMove method is used to add the AI's move to the game state
   addAIMove = (col) => {
@@ -76,8 +76,9 @@ class AI {
   // If it's between 7 and 25 and the game has not been resolved, the midGame method is called.
   // If it's between 26 and 28 and the game has not been resolved, the endMidGame method is called.
   // Otherwise, the endGame method is called.
-  computeMove = () => {
-
+  computeMove = (board) => {
+    //TODO changer la grille stockée par la grille board
+    // Changer la façon de stocker pour les notations H = humain, M = machine et 0 = non joué
     if (this.position.nbMoves < 7) {
       return this.earlyGame();
     }
@@ -93,10 +94,10 @@ class AI {
 
   // The nextMove method is called after each move made by the opponent
   // to update the game state and compute the AI's next move.
-  nextMove = (lastMove) => {
+  /*nextMove = (lastMove) => {
     this.addEnemyMove(lastMove);
     return this.computeMove();
-  };
+  };*/
 
   earlyGame = () => {
     if (this.playedMoves === '') {
