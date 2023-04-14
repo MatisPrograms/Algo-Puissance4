@@ -58,8 +58,7 @@ class Position {
       .padStart(this.#WIDTH * (this.#HEIGHT + 1), '0');
     const position = paddedKey.match(/.{1,7}/g) ?? [];
     const matrix = position.map((row) => row.split(''));
-    const rotated = matrix[0].map((_, index) => matrix.map((row) => row[index]).reverse());
-    return rotated;
+    return matrix[0].map((_, index) => matrix.map((row) => row[index]).reverse());
   };
 
   hydrate = (position, mask, moves) => {
@@ -138,10 +137,9 @@ class Position {
   };
 
   moveScore = (move) => {
-    const score = this.popcount(
-      this.computeWinningPosition(this.#currentPosition | move, this.#mask),
+    return this.popcount(
+        this.computeWinningPosition(this.#currentPosition | move, this.#mask),
     );
-    return score;
   };
 
   score = () => this.moveScore(this.#mask);

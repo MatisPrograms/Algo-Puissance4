@@ -1,8 +1,6 @@
 const app = require('express')();
 const {checkDraw, checkWinner, printBoard} = require('../boardUtils');
 
-const maxSeconds = 2;
-
 const minmax = new (require('./AI'));
 
 const lines = 6;

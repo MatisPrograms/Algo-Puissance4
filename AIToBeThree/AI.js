@@ -1,4 +1,3 @@
-/* eslint-disable no-bitwise */
 const Position = require('./Position');
 const MoveSorter = require('./MoveSorter');
 const TranspositionTable = require('./TranspositionTable');
@@ -268,9 +267,3 @@ module.exports = AI;
 function printBoard(board) {
   console.table(board[0].map((col, i) => board.map(row => row[i])).reverse());
 }
-/*
-module.exports = {
-  nextMove,
-  hydrate,
-  AI,
-};*/

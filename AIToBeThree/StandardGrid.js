@@ -29,8 +29,8 @@ class StandardGrid {
   }
 
   isAvailable({ x, y }) {
-    if (this.#matrix[x][y] === 0) return true;
-    return false;
+    return this.#matrix[x][y] === 0;
+
   }
 
   isValid({ x, y }) {
