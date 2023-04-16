@@ -13,7 +13,6 @@ class AI {
   #transTable;
   constructor() {
     this.AIPlays = 2;
-    this.enemyNumber = 1;
     this.position = new Position();
     this.standardGrid = new StandardGrid();
     this.playedMoves = '';
@@ -45,7 +44,6 @@ class AI {
       this.AIPlays = i % 2 === 0 ? 2 : 1;
     }
     if (full) return undefined;
-    this.enemyNumber = this.AIPlays === 1 ? 2 : 1;
     const nextCol = +lastMove - 1;
     const nextRow = this.standardGrid.findFirstEmpty(nextCol);
     return [nextCol, nextRow];
@@ -129,8 +127,8 @@ class AI {
     });
 
     if (bestMoveSymetric) {
-      const bestColMoveSymetric = parseInt(bestMoveSymetric[1], 10);
-      const invertedMove = this.position.WIDTH - 1 - parseInt(bestColMoveSymetric, 10);
+      const bestColMoveSymmetric = parseInt(bestMoveSymetric[1], 10);
+      const invertedMove = this.position.WIDTH - 1 - parseInt(bestColMoveSymmetric, 10);
       const row = this.addAIMove(invertedMove);
 
       return [invertedMove, row];
@@ -257,9 +255,9 @@ class AI {
 }
 
 let ai;
-const nextMove = (lastMove) => new Promise((resolve) => {
+/*const nextMove = (lastMove) => new Promise((resolve) => {
   resolve(ai.nextMove(lastMove));
-});
+});*/
 
 const hydrate = (state) => ai.hydrate(state);
 
