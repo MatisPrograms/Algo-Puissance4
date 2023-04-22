@@ -1,10 +1,7 @@
-// const { Worker } = require('worker_threads');
-
 const app = require('express')();
-const {checkDraw, checkWinner} = require('./boardUtils');
+const {checkDraw, checkWinner, checkFloatingPieces} = require('./boardUtils');
 
 const maxSeconds = 2;
-
 const monteCarlo = new (require('./monteCarlo'))(maxSeconds);
 
 const lines = 6;
@@ -33,31 +30,8 @@ app.get('/move', (req, res) => {
     if (!parseUrlBoard(board, req.query.b)) res.status(400).json({error: 'Invalid board'});
 
     res.status(200).send({
-        column: monteCarlo.calculateNextMove(board)
+        column: monteCarlo.calculateNextMove(JSON.parse(JSON.stringify(board)))
     });
-    //
-    // // Create a new worker thread to calculate the next move
-    // const worker = new Worker('./monteCarlo.js', { workerData: board });
-    //
-    // // Listen for the worker to finish calculating the move
-    // worker.on('message', move => {
-    //     res.status(200).send({
-    //         column: move
-    //     });
-    // });
-    //
-    // // Listen for errors from the worker
-    // worker.on('error', err => {
-    //     console.error(err);
-    //     res.status(500).json({ error: 'Internal server error' });
-    // });
-    //
-    // // Terminate the worker when it is done
-    // worker.on('exit', code => {
-    //     if (code !== 0) {
-    //         console.error(`Worker stopped with exit code ${code}`);
-    //     }
-    // });
 });
 
 
@@ -81,6 +55,8 @@ function parseUrlBoard(board, string) {
         board[Math.floor(indexC / lines)][indexC % lines] = c;
     }
 
-    return !(checkDraw(board) || checkWinner(board));
+    // Check if board doesn't have floating pieces
+    if (checkFloatingPieces(board)) return false;
 
+    return !(checkDraw(board) || checkWinner(board));
 }

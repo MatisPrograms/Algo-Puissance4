@@ -1,6 +1,6 @@
 function checkDraw(board) {
-    for (let i = 0; i < 7; i++) {
-        if (board[i][5] === '0') return false;
+    for (const element of board) {
+        if (element[5] === '0') return false;
     }
     return true;
 }
@@ -15,6 +15,15 @@ function checkWinner(board) {
     return false;
 }
 
+function checkFloatingPieces(board) {
+    for (const element of board) {
+        for (let j = 1; j < board[0].length; j++) {
+            if (element[j] !== '0' && element[j - 1] === '0') return true;
+        }
+    }
+    return false;
+}
+
 function checkWinnerFromCell(board, row, col) {
     let winner = {
         player: '0',
@@ -24,26 +33,26 @@ function checkWinnerFromCell(board, row, col) {
     let count = 0;
     let currPlayer = board[row][col];
 
-    for (let i = 0; i < directions.length; i++) {
+    for (const element of directions) {
         count = 1;
-        let r = row + directions[i][0];
-        let c = col + directions[i][1];
+        let r = row + element[0];
+        let c = col + element[1];
         let cells = [[row, col]];
 
         while (r >= 0 && r < board.length && c >= 0 && c < board[0].length && board[r][c] === currPlayer) {
             count++;
             cells.push([r, c]);
-            r += directions[i][0];
-            c += directions[i][1];
+            r += element[0];
+            c += element[1];
         }
 
-        r = row - directions[i][0];
-        c = col - directions[i][1];
+        r = row - element[0];
+        c = col - element[1];
         while (r >= 0 && r < board.length && c >= 0 && c < board[0].length && board[r][c] === currPlayer) {
             count++;
             cells.push([r, c]);
-            r -= directions[i][0];
-            c -= directions[i][1];
+            r -= element[0];
+            c -= element[1];
         }
         if (count >= 4) {
             winner.player = currPlayer;
@@ -59,23 +68,23 @@ function countStreakFromCell(board, row, col, streak) {
     let count = 0;
     let currPlayer = board[row][col];
 
-    for (let i = 0; i < directions.length; i++) {
+    for (const element of directions) {
         count = 1;
-        let r = row + directions[i][0];
-        let c = col + directions[i][1];
+        let r = row + element[0];
+        let c = col + element[1];
 
         while (count < 5 && r >= 0 && r < board.length && c >= 0 && c < board[0].length && (board[r][c] === currPlayer || board[r][c] === '')) {
             if (board[r][c] !== '0') count++;
-            r += directions[i][0];
-            c += directions[i][1];
+            r += element[0];
+            c += element[1];
         }
 
-        r = row - directions[i][0];
-        c = col - directions[i][1];
+        r = row - element[0];
+        c = col - element[1];
         while (count < 5 && r >= 0 && r < board.length && c >= 0 && c < board[0].length && (board[r][c] === currPlayer || board[r][c] === '')) {
             if (board[r][c] !== '0') count++;
-            r -= directions[i][0];
-            c -= directions[i][1];
+            r -= element[0];
+            c -= element[1];
         }
         if (count >= streak) return true;
     }
@@ -99,4 +108,12 @@ function printBoard(board) {
     console.table(board[0].map((col, i) => board.map(row => row[i])).reverse());
 }
 
-module.exports = {checkDraw, checkWinner, checkWinnerFromCell, countStreakFromCell, neighbors, printBoard};
+module.exports = {
+    checkDraw,
+    checkWinner,
+    checkWinnerFromCell,
+    checkFloatingPieces,
+    countStreakFromCell,
+    neighbors,
+    printBoard
+};

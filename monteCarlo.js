@@ -1,10 +1,7 @@
-// const {parentPort} = require('worker_threads');
 const {checkDraw, checkWinnerFromCell, neighbors, printBoard} = require('./boardUtils');
 
 // Define the MonteCarlo class
 class MonteCarlo {
-
-    static transpositionTable = new Map();
 
     /**
      * Set the maximum number of seconds the algorithm can run
@@ -43,53 +40,72 @@ class MonteCarlo {
 
         let bestMove;
         let bestScore = -Infinity;
+
+        const moves = neighbors(board);
         const results = [];
+        const data = [];
 
         // Loop until the maximum number of seconds has passed
         while (Date.now() < endTime) {
+            iterations++;
+
+            // Create a copy of the board and make a random move
+            const tmpBoard = JSON.parse(JSON.stringify(board));
+            const randomMove = moves[Math.floor(Math.random() * moves.length)];
+            tmpBoard[randomMove.x][randomMove.y] = 'M';
 
             // Run the simulation game
-            results.push(this.simulationGame(JSON.parse(JSON.stringify(board))))
-            iterations++;
+            results.push({
+                move: randomMove,
+                score: this.simulationGame(tmpBoard, 'H')
+            })
         }
 
         // Get the best move from score
-        for (const result of results) {
-            if (result.score > bestScore) {
-                bestMove = result.move;
-                bestScore = result.score;
+        for (const move of moves) {
+            const moveResults = results.filter(r => r.move.x === move.x && r.move.y === move.y);
+
+            const occurrences = moveResults.length;
+            const wins = moveResults.filter(r => r.score > 0).length;
+            const score = wins / occurrences;
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = move;
             }
+
+            data.push({
+                Occurrences: `${(occurrences / iterations * 100).toFixed(2)}%`,
+                Wins: wins,
+                Losses: occurrences - wins,
+                'Win Rate': `${(wins / occurrences * 100).toFixed(2)}%`
+            });
         }
 
         board[bestMove.x][bestMove.y] = 'M';
 
         // Print board after move
         printBoard(board);
+        console.table(data);
 
-        console.log(`Iterations: ${iterations} - Best move: ${bestMove.x} - Best score: ${bestScore}`)
+        bestMove.x++;
+        bestMove.y++;
+
+        console.log(`Iterations: ${iterations} | Best move: ${bestMove.x} - Best score: ${(bestScore * 100).toFixed(2)}%`)
         return clamp(1, bestMove.x, 7)
     }
 
-    simulationGame(board, player = 'M', turn = 0) {
-        let score;
+    simulationGame(board, player) {
         const moves = neighbors(board);
         const randomMove = moves[Math.floor(Math.random() * moves.length)];
 
         board[randomMove.x][randomMove.y] = player;
 
-        if (checkDraw(board)) score = 0;
-
+        if (checkDraw(board)) return 0;
         const winner = checkWinnerFromCell(board, randomMove.x, randomMove.y);
-        if (winner.player !== '0') score = (22 - turn) * (winner.player === 'M' ? 1 : -1)
+        if (winner.player !== '0') return winner.player === 'M' ? 1 : -1;
 
-        if (score === undefined) score = this.simulationGame(board, player === 'M' ? 'H' : 'M', turn + 1).score;
-
-        const key = JSON.stringify(board);
-        if (!MonteCarlo.transpositionTable.has(key)) MonteCarlo.transpositionTable.set(key, {
-            score: score, move: randomMove
-        })
-
-        return MonteCarlo.transpositionTable.get(key);
+        return this.simulationGame(board, player === 'M' ? 'H' : 'M');
     }
 }
 
