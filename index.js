@@ -1,7 +1,7 @@
 const app = require('express')();
 const {checkDraw, checkWinner, checkFloatingPieces} = require('./boardUtils');
 
-const maxSeconds = 2;
+const maxSeconds = 1;
 const monteCarlo = new (require('./monteCarlo'))(maxSeconds);
 
 const lines = 6;

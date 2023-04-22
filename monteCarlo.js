@@ -35,7 +35,8 @@ class MonteCarlo {
         // Print board before move
         printBoard(board);
 
-        const endTime = Date.now() + this.maxSeconds * 1000;
+        const startTime = Date.now();
+        const endTime = startTime + this.maxSeconds * 1000;
         let iterations = 0;
 
         let bestMove;
@@ -91,7 +92,7 @@ class MonteCarlo {
         bestMove.x++;
         bestMove.y++;
 
-        console.log(`Iterations: ${iterations} | Best move: ${bestMove.x} - Best score: ${(bestScore * 100).toFixed(2)}%`)
+        console.log(`Iterations: ${iterations} in ${((Date.now() - startTime) / 1e3).toFixed(2)}s | Best move: ${bestMove.x} - Best score: ${(bestScore * 100).toFixed(2)}%`)
         return clamp(1, bestMove.x, 7)
     }
 
