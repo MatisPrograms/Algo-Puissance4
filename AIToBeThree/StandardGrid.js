@@ -31,16 +31,6 @@ class StandardGrid {
     return -1;
   }
 
-  isAvailable({ x, y }) {
-    return this.#matrix[x][y] === 0;
-
-  }
-
-  isValid({ x, y }) {
-    if (!this.isAvailable({ x, y })) return false;
-    return y === this.findFirstEmpty(x);
-  }
-
   fillBoard(board){
     this.#matrix = board;
   }

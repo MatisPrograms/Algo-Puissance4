@@ -12,7 +12,6 @@ class AI {
 
   #transTable;
   constructor() {
-    this.AIPlays = 2;
     this.position = new Position();
     this.standardGrid = new StandardGrid();
     this.playedMoves = '';
@@ -56,7 +55,6 @@ class AI {
     this.standardGrid.add({ x: col, y: row});
     this.position.playCol(col);
     this.playedMoves += col;
-    //return row;
   };
 
   // The computeMove method is used to compute the AI's next move.
@@ -65,8 +63,6 @@ class AI {
   // If it's between 26 and 28 and the game has not been resolved, the endMidGame method is called.
   // Otherwise, the endGame method is called.
   computeMove = (board) => {
-    //TODO changer la grille stockée par la grille board
-    // Changer la façon de stocker pour les notations H = humain, M = machine et 0 = non joué
     this.standardGrid.fillBoard(board);
     if (this.position.nbMoves < 7) {
       return this.earlyGame();
