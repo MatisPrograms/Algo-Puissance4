@@ -53,7 +53,7 @@ class AI {
   //The addAIMove method is used to add the AI's move to the game state
   addAIMove = (col) => {
     const row = this.standardGrid.findFirstEmpty(col);
-    this.standardGrid.add({ x: col, y: row, playerNumber: this.AIPlays });
+    this.standardGrid.add({ x: col, y: row});
     this.position.playCol(col);
     this.playedMoves += col;
     //return row;
@@ -67,6 +67,7 @@ class AI {
   computeMove = (board) => {
     //TODO changer la grille stockée par la grille board
     // Changer la façon de stocker pour les notations H = humain, M = machine et 0 = non joué
+    this.standardGrid.fillBoard(board);
     if (this.position.nbMoves < 7) {
       return this.earlyGame();
     }
@@ -80,6 +81,10 @@ class AI {
   };
 
   earlyGame = () => {
+    if (this.playedMoves === '') {
+      this.addAIMove(3);
+      return 3;
+    }
     const bestMoves =  bestSecondPlayerMoves;
 
     const bestMove = bestMoves.find((move) => {
@@ -90,7 +95,6 @@ class AI {
     if (bestMove) {
       const bestColMove = parseInt(bestMove[1], 10);
       this.addAIMove(bestColMove);
-      this.standardGrid.printBoard();
       return bestColMove;
     }
 
@@ -109,12 +113,11 @@ class AI {
       const bestColMoveSymmetric = parseInt(bestMoveSymetric[1], 10);
       const invertedMove = this.position.WIDTH - 1 - parseInt(bestColMoveSymmetric, 10);
       this.addAIMove(invertedMove);
-      this.standardGrid.printBoard();
       return invertedMove;
     }
 
     this.addAIMove(3);
-    this.standardGrid.printBoard();
+
     return 3;
   };
 
@@ -239,6 +242,3 @@ let ai;
 const hydrate = (state) => ai.hydrate(state);
 
 module.exports = AI;
-/*function printBoard(board) {
-  console.table(board[0].map((col, i) => board.map(row => row[i])).reverse());
-}*/

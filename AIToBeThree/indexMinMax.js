@@ -31,7 +31,7 @@ app.get('/move', (req, res) => {
     console.log("AIToBeThree what you give :")
     printBoard(board)
     console.log("AIToBeThree what I do :")
-    //TODO
+
     res.status(200).send({
         column: minmax.computeMove(board),
     });

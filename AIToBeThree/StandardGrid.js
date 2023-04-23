@@ -1,3 +1,5 @@
+const {printBoard} = require("../boardUtils");
+
 class StandardGrid {
   #height;
 
@@ -15,13 +17,14 @@ class StandardGrid {
     this.#matrix = game.matrix;
   }
 
-  add({ x, y, playerNumber }) {
-    this.#matrix[x][y] = playerNumber;
+  add({ x, y }) {
+    this.#matrix[x][y] = "M";
+    printBoard(this.#matrix);
   }
 
   findFirstEmpty(x) {
     for (let y = 0; y < this.#height; y += 1) {
-      if (typeof this.#matrix[x][y] === 'undefined' || this.#matrix[x][y] === 0) {
+      if (typeof this.#matrix[x][y] === 'undefined' || this.#matrix[x][y] === '0') {
         return y;
       }
     }
@@ -38,10 +41,8 @@ class StandardGrid {
     return y === this.findFirstEmpty(x);
   }
 
-  //TODO mettre à jour le board avec les données entrée via le /move
-  //Changer le 1 et 2 par H et M respectivement
-  printBoard() {
-    console.table(this.#matrix[0].map((col, i) => this.#matrix.map(row => row[i])).reverse());
+  fillBoard(board){
+    this.#matrix = board;
   }
 }
 
