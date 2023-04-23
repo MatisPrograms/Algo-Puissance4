@@ -56,7 +56,7 @@ class AI {
     this.standardGrid.add({ x: col, y: row, playerNumber: this.AIPlays });
     this.position.playCol(col);
     this.playedMoves += col;
-    return row;
+    //return row;
   };
 
   // The computeMove method is used to compute the AI's next move.
@@ -80,11 +80,6 @@ class AI {
   };
 
   earlyGame = () => {
-    if (this.playedMoves === '') {
-      const row = this.addAIMove(3);
-      return [3, row];
-    }
-
     const bestMoves =  bestSecondPlayerMoves;
 
     const bestMove = bestMoves.find((move) => {
@@ -94,8 +89,9 @@ class AI {
 
     if (bestMove) {
       const bestColMove = parseInt(bestMove[1], 10);
-      const row = this.addAIMove(bestColMove);
-      return [bestColMove, row];
+      this.addAIMove(bestColMove);
+      this.standardGrid.printBoard();
+      return bestColMove;
     }
 
     const stringifiedBitmap = JSON.stringify(this.position.bitmap());
@@ -112,13 +108,14 @@ class AI {
     if (bestMoveSymetric) {
       const bestColMoveSymmetric = parseInt(bestMoveSymetric[1], 10);
       const invertedMove = this.position.WIDTH - 1 - parseInt(bestColMoveSymmetric, 10);
-      const row = this.addAIMove(invertedMove);
-
-      return [invertedMove, row];
+      this.addAIMove(invertedMove);
+      this.standardGrid.printBoard();
+      return invertedMove;
     }
 
-    const row = this.addAIMove(3);
-    return [3, row];
+    this.addAIMove(3);
+    this.standardGrid.printBoard();
+    return 3;
   };
 
   midGame = () => {
@@ -126,8 +123,8 @@ class AI {
       this.bestColumn(this.position, -Infinity, Infinity, 3, Infinity),
       10,
     );
-    const row = this.addAIMove(col);
-    return [col, row];
+    this.addAIMove(col);
+    return col;
   };
 
   endMidGame = () => {
@@ -135,8 +132,8 @@ class AI {
       this.bestColumn(this.position, -Infinity, Infinity, 7),
       10,
     );
-    const row = this.addAIMove(col);
-    return [col, row];
+    this.addAIMove(col);
+    return col;
   };
 
   endGame = () => {
@@ -144,8 +141,8 @@ class AI {
       this.bestColumn(this.position, -Infinity, Infinity),
       10,
     );
-    const row = this.addAIMove(col);
-    return [col, row];
+    this.addAIMove(col);
+    return col;
   };
 
   // The bestColumn method is the heart of the minimax algorithm.
@@ -242,6 +239,6 @@ let ai;
 const hydrate = (state) => ai.hydrate(state);
 
 module.exports = AI;
-function printBoard(board) {
+/*function printBoard(board) {
   console.table(board[0].map((col, i) => board.map(row => row[i])).reverse());
-}
+}*/

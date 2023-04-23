@@ -16,8 +16,8 @@ const board = [
     ['0', '0', '0', '0', '0', '0']
 ];
 
-app.listen(3000, () => {
-    console.log('Server started on port 3000');
+app.listen(3001, () => {
+    console.log('Server started on port 3001');
 });
 
 app.get('/', (req, res) => {
@@ -28,7 +28,10 @@ app.get('/move', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     if (!parseUrlBoard(board, req.query.b)) res.status(400).json({error: 'Invalid board'});
 
+    console.log("AIToBeThree what you give :")
     printBoard(board)
+    console.log("AIToBeThree what I do :")
+    //TODO
     res.status(200).send({
         column: minmax.computeMove(board),
     });

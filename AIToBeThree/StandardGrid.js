@@ -37,6 +37,12 @@ class StandardGrid {
     if (!this.isAvailable({ x, y })) return false;
     return y === this.findFirstEmpty(x);
   }
+
+  //TODO mettre à jour le board avec les données entrée via le /move
+  //Changer le 1 et 2 par H et M respectivement
+  printBoard() {
+    console.table(this.#matrix[0].map((col, i) => this.#matrix.map(row => row[i])).reverse());
+  }
 }
 
 module.exports = StandardGrid;
