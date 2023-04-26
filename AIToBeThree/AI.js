@@ -60,21 +60,22 @@ class AI {
 
   // La méthode computeMove est utilisée pour calculer le prochain coup de l'IA.
   computeMove = (board) => {
-    this.standardGrid.fillBoard(board);
+    this.position.nbMoves = this.standardGrid.fillBoard(board);
+    console.log(this.position.nbMoves);
     // Si le nombre de coups joués est inférieur à 7, la méthode earlyGame est appelée.
     if (this.position.nbMoves < 7) {
-      return this.earlyGame();
+      return this.earlyGame() + 1;
     }
     // S'il est compris entre 7 et 25 et que le jeu n'a pas été résolu, la méthode midGame est appelée.
     if (this.position.nbMoves < 26 && !this.isResolved) {
-      return this.midGame();
+      return this.midGame() +1;
     }
     // S'il est compris entre 26 et 28 et que le jeu n'a pas été résolu, la méthode endGame est appelée.
     if (this.position.nbMoves < 29 && !this.isResolved) {
-      return this.endMidGame();
+      return this.endMidGame()+1;
     }
     // Sinon, la méthode endGame est appelée.
-    return this.endGame();
+    return this.endGame()+1;
   };
 
   earlyGame = () => {

@@ -11,6 +11,7 @@ class Position {
   #moves;
 
   #playedMoves;
+  nbMoves;
 
   constructor(width, height) {
     if (width) this.#WIDTH = width;
@@ -19,6 +20,7 @@ class Position {
     this.#mask = BigInt(0);
     this.#moves = 0;
     this.#playedMoves = '';
+    this.nbMoves = 0;
   }
 
   get WIDTH() {

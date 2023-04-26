@@ -32,7 +32,15 @@ class StandardGrid {
   }
 
   fillBoard(board){
+    let count = 0;
     this.#matrix = board;
+    for (let i =0; i < this.#width; i++){
+      for (let j = 0; j < this.#height; j ++){
+        if (this.#matrix[i][j] !== '0')
+          count +=1;
+      }
+    }
+    return count;
   }
 }
 

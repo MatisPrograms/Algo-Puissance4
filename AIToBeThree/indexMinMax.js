@@ -39,7 +39,7 @@ app.get('/move', (req, res) => {
     console.log("AIToBeThree what I do :")
 
     res.status(200).send({
-        column: minmax.computeMove(board)+1,
+        column: minmax.computeMove(board),
     });
 });
 
