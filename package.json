@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "MonteCarlo": "nodemon index.js",
-    "MiniMax": "nodemon AIToBeThree/indexMinMax.js"
+    "MiniMax": "nodemon MiniMax/indexMinMax.js"
   },
   "author": "",
   "license": "ISC",
