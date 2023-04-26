@@ -197,14 +197,23 @@ class AI {
     return possibleMoves.getNext().col;
   };
 
+  // Fonction minmax pour implémenter l'algorithme alpha-beta pruning
+  // pos est l'état actuel du jeu (instance de la classe Position)
+  // alphaInit et betaInit sont les paramètres alpha et beta pour la recherche
+  // depth (profondeur) est la profondeur maximale de recherche
+  // clamp est le nombre maximum de mouvements considérés pour chaque colonne
   minmax = (pos, alphaInit, betaInit, depth = Infinity, clamp = Infinity) => {
     let alpha = alphaInit;
     let beta = betaInit;
     if (alpha >= beta) return alpha;
     if (depth === 0) return Number(pos.score());
+    // On récupère les mouvements possibles non perdants de la position actuelle
     const next = pos.possibleNonLosingMoves();
+    // Si aucun mouvement n'est possible, on retourne le score de la position
     if (next === 0n) return -(pos.WIDTH * pos.HEIGHT - pos.nbMoves) / 2;
+    // Si le nombre de mouvements effectués est égal au nombre maximal de mouvements
     if (pos.nbMoves >= pos.WIDTH * pos.HEIGHT - 2) return 0;
+    // On calcule le score minimal possible
     const min = -(pos.WIDTH * pos.HEIGHT - 2 - pos.nbMoves) / 2;
     if (alpha < min) {
       alpha = min;
@@ -218,6 +227,7 @@ class AI {
       beta = max;
       if (alpha >= beta) return beta;
     }
+    // On crée un objet MoveSorter pour trier les mouvements possibles
     const moves = new MoveSorter(pos.WIDTH);
     for (let i = 0; i < pos.WIDTH; i++) {
       const move = next & pos.columnMask(this.#columnOrder[i]);
@@ -225,11 +235,14 @@ class AI {
         moves.add(move, pos.moveScore(move), this.#columnOrder[i]);
       }
     }
+    // On limite le nombre de mouvements considérés pour chaque colonne
     moves.clamp(clamp);
     let nextMove = moves.getNext();
     while (nextMove) {
       const pos2 = pos.clone();
       pos2.play(nextMove.move);
+      // On appelle la fonction minmax récursivement sur la nouvelle position
+      // en inversant les valeurs de alpha et beta
       const score = -this.minmax(pos2, -beta, -alpha, depth - 1);
       if (score >= beta) return score;
       if (score > alpha) {
@@ -237,6 +250,9 @@ class AI {
       }
       nextMove = moves.getNext();
     }
+
+  // On stocke le résultat dans la table de transposition
+  // en soustrayant MIN_SCORE + 1 pour compresser la valeur alpha
     this.#transTable.put(pos.key(), alpha - MIN_SCORE + 1);
     return alpha;
   };
