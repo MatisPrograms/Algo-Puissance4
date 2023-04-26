@@ -46,6 +46,12 @@ class MonteCarlo {
         const results = [];
         const data = [];
 
+        for (const move of moves) {
+            const tmpBoard = JSON.parse(JSON.stringify(board));
+            tmpBoard[move.x][move.y] = 'M';
+            if (checkWinnerFromCell(tmpBoard, move.x, move.y).player === 'M') return clamp(1, move.x + 1, 7);
+        }
+
         // Loop until the maximum number of seconds has passed
         while (Date.now() < endTime) {
             iterations++;
@@ -55,10 +61,13 @@ class MonteCarlo {
             const randomMove = moves[Math.floor(Math.random() * moves.length)];
             tmpBoard[randomMove.x][randomMove.y] = 'M';
 
+            const simulationResult = this.simulationGame(tmpBoard, 'H');
+
             // Run the simulation game
             results.push({
                 move: randomMove,
-                score: this.simulationGame(tmpBoard, 'H')
+                score: simulationResult.score,
+                depth: simulationResult.depth
             })
         }
 
@@ -68,7 +77,9 @@ class MonteCarlo {
 
             const occurrences = moveResults.length;
             const wins = moveResults.filter(r => r.score > 0).length;
-            const score = wins / occurrences;
+            const winRate = wins / occurrences;
+            const avgDepth = moveResults.reduce((a, b) => a + b.depth, 0) / occurrences;
+            const score = winRate / avgDepth;
 
             if (score > bestScore) {
                 bestScore = score;
@@ -77,9 +88,11 @@ class MonteCarlo {
 
             data.push({
                 Occurrences: `${(occurrences / iterations * 100).toFixed(2)}%`,
-                Wins: wins,
-                Losses: occurrences - wins,
-                'Win Rate': `${(wins / occurrences * 100).toFixed(2)}%`
+                Wins: `${wins}`,
+                Losses: `${occurrences - wins}`,
+                'Win Rate': `${(winRate * 100).toFixed(2)}%`,
+                'Avg Depth': avgDepth.toFixed(2),
+                'Score': `${(score * 100).toFixed(2)}%`
             });
         }
 
@@ -96,17 +109,23 @@ class MonteCarlo {
         return clamp(1, bestMove.x, 7)
     }
 
-    simulationGame(board, player) {
+    simulationGame(board, player, depth = 0) {
         const moves = neighbors(board);
         const randomMove = moves[Math.floor(Math.random() * moves.length)];
 
         board[randomMove.x][randomMove.y] = player;
 
-        if (checkDraw(board)) return 0;
+        if (checkDraw(board)) return {
+            score: 0,
+            depth: depth
+        }
         const winner = checkWinnerFromCell(board, randomMove.x, randomMove.y);
-        if (winner.player !== '0') return winner.player === 'M' ? 1 : -1;
+        if (winner.player !== '0') return {
+            score: winner.player === 'M' ? 1 : -1,
+            depth: depth
+        };
 
-        return this.simulationGame(board, player === 'M' ? 'H' : 'M');
+        return this.simulationGame(board, player === 'M' ? 'H' : 'M', depth + 1);
     }
 }
 

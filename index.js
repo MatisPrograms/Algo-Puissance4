@@ -34,13 +34,13 @@ app.get('/move', (req, res) => {
     urlBoard = parseUrlBoard(board, req.query.b)
     if (!urlBoard.valid) {
         if (urlBoard.error === "Game Over")
-            res.status(422).json({detail: 'Invalid board : ' + urlBoard.error});
+            return res.status(422).json({detail: 'Invalid board : ' + urlBoard.error});
         else {
-            res.status(400).json({detail: 'Invalid board : ' + urlBoard.error});
+            return res.status(400).json({detail: 'Invalid board : ' + urlBoard.error});
         }
     }
 
-    res.status(200).send({
+    return res.status(200).send({
         column: monteCarlo.calculateNextMove(JSON.parse(JSON.stringify(board)))
     });
 });
