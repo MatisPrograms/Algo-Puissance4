@@ -107,7 +107,7 @@ function printBoard(board) {
     console.table(board[0].map((col, i) => board.map(row => row[i])).reverse());
 
     let stringBoard = "";
-    for (let i = board.length - 1; i >= 0; i--) {
+    for (let i = 0; i < board.length; i++) {
         for (const c of board[i]) {
             stringBoard += c;
         }
