@@ -1,5 +1,6 @@
 const app = require('express')();
-const {checkDraw, checkWinner, checkFloatingPieces} = require('./boardUtils');
+const {checkDraw, checkWinner, checkFloatingPieces, printBoard} = require('./boardUtils');
+const port = 3002;
 
 const maxSeconds = 1;
 const monteCarlo = new (require('./monteCarlo'))(maxSeconds);
@@ -17,9 +18,9 @@ const board = [
     ['0', '0', '0', '0', '0', '0']
 ];
 
-app.listen(3000, () => {
-    console.log('Server started on port 3000');
-    console.log("Use http://localhost:3000/move?b=" + "0".repeat(42) + " to start from an empty board");
+app.listen(port, () => {
+    console.log('Server started on port', port);
+    console.log("Use http://localhost:" + port + "/move?b=" + "0".repeat(42) + " to start from an empty board");
 });
 
 app.get('/', (req, res) => {

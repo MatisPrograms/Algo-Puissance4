@@ -26,8 +26,7 @@ function checkFloatingPieces(board) {
 
 function checkWinnerFromCell(board, row, col) {
     let winner = {
-        player: '0',
-        cells: [],
+        player: '0', cells: [],
     };
     let directions = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
     let count = 0;
@@ -106,14 +105,17 @@ function neighbors(board) {
 
 function printBoard(board) {
     console.table(board[0].map((col, i) => board.map(row => row[i])).reverse());
+
+    let stringBoard = "";
+    for (let i = board.length - 1; i >= 0; i--) {
+        for (const c of board[i]) {
+            stringBoard += c;
+        }
+    }
+
+    console.log(stringBoard);
 }
 
 module.exports = {
-    checkDraw,
-    checkWinner,
-    checkWinnerFromCell,
-    checkFloatingPieces,
-    countStreakFromCell,
-    neighbors,
-    printBoard
+    checkDraw, checkWinner, checkWinnerFromCell, checkFloatingPieces, neighbors, printBoard
 };
