@@ -1,5 +1,5 @@
 const app = require('express')();
-const {checkDraw, checkWinner, checkFloatingPieces, printBoard} = require('./boardUtils');
+const {checkDraw, checkWinner, checkFloatingPieces} = require('./boardUtils');
 const port = 3002;
 
 const maxSeconds = 1;
