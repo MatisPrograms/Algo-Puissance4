@@ -5,7 +5,7 @@
 - HERRMANN Matis
 
 ## Rendu Vidéo
-[Cliquez ici](https://clipchamp.com/watch/m6hiROEc8A3).
+[Cliquez ici](https://clipchamp.com/watch/m6hiROEc8A3). 
 
 ## Présentation du sujet
 Le sujet consiste à développer un service indépendant permettant de cal-
