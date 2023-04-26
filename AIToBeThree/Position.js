@@ -168,18 +168,22 @@ class Position {
   possible = () => (this.#mask + this.bottomMask()) & this.boardMask();
 
   computeWinningPosition = (pos, mask) => {
+    // On calcule toutes les combinaisons de 4 jetons alignés horizontalement
     let r = (pos << 1n) & (pos << 2n) & (pos << 3n);
 
+    // On calcule toutes les combinaisons de 4 jetons alignés diagonalement vers la droite (en bas à droite)
     let p = (pos << BigInt(this.#HEIGHT + 1))
       & (pos << BigInt(2 * (this.#HEIGHT + 1)));
     r |= p & (pos << BigInt(3 * (this.#HEIGHT + 1)));
     r |= p & (pos >> BigInt(this.#HEIGHT + 1));
 
+    // On calcule toutes les combinaisons de 4 jetons alignés diagonalement vers la gauche (en bas à gauche)
     p = (pos >> BigInt(this.#HEIGHT + 1))
       & (pos >> (2n * BigInt(this.#HEIGHT + 1)));
     r |= p & (pos << BigInt(this.#HEIGHT + 1));
     r |= p & (pos >> BigInt(3 * (this.#HEIGHT + 1)));
 
+    // On calcule toutes les combinaisons de 4 jetons alignés verticalement
     p = (pos << BigInt(this.#HEIGHT)) & (pos << BigInt(2 * this.#HEIGHT));
     r |= p & (pos << BigInt(3 * this.#HEIGHT));
     r |= p & (pos >> BigInt(this.#HEIGHT));
@@ -187,6 +191,7 @@ class Position {
     r |= p & (pos << BigInt(this.#HEIGHT));
     r |= p & (pos >> BigInt(3 * this.#HEIGHT));
 
+    // On calcule toutes les combinaisons de 4 jetons alignés diagonalement vers la droite (en haut à droite)
     p = (pos << BigInt(this.#HEIGHT + 2))
       & (pos << BigInt(2 * (this.#HEIGHT + 2)));
     r |= p & (pos << BigInt(3 * (this.#HEIGHT + 2)));

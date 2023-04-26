@@ -27,7 +27,12 @@ app.get('/', (req, res) => {
 
 app.get('/move', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    if (!parseUrlBoard(board, req.query.b)) res.status(400).json({error: 'Invalid board'});
+    urlBoard = parseUrlBoard(board, req.query.b)
+    if (!urlBoard.valid) {
+        if (urlBoard.error === "Game Over")
+            res.status(422).json({detail: 'Invalid board : ' + urlBoard.error});
+        else{res.status(400).json({detail: 'Invalid board : ' + urlBoard.error});}
+    }
 
     res.status(200).send({
         column: monteCarlo.calculateNextMove(JSON.parse(JSON.stringify(board)))
@@ -37,15 +42,15 @@ app.get('/move', (req, res) => {
 
 function parseUrlBoard(board, string) {
     // Check if board is valid
-    if (!board) return false;
+    if (!board) return {valid:false, error :"no board given"};
 
     // Check if string length is valid
-    if (string.length !== 42) return false;
+    if (string.length !== 42) return {valid: false, error: "The board doesn't have the right size"};
 
     string = string.toUpperCase();
 
     // Check if string only contains M, H or 0
-    if (!string.match(/^[MH0]+$/)) return false;
+    if (!string.match(/^[MH0]+$/)) return {valid: false, error: "The board contain values other than M / H / 0"};
 
     // convert string to board
     let indexC = -1;
@@ -56,7 +61,7 @@ function parseUrlBoard(board, string) {
     }
 
     // Check if board doesn't have floating pieces
-    if (checkFloatingPieces(board)) return false;
+    if (checkFloatingPieces(board)) return {valid:false,error: "Some pieces are floating, Please don't cheat"};
 
-    return !(checkDraw(board) || checkWinner(board));
+    return {valid:!(checkDraw(board) || checkWinner(board)), error: "Game Over"};
 }
