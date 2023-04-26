@@ -1,7 +1,8 @@
 # Algo-Puissance4
-The powerful team
-Better than the others
-
+## Auteurs
+- CHABANIER Aurélia
+- DEVICTOR Pauline
+- HERRMANN Matis
 
 ## Présentation du sujet
 Le sujet consiste à développer un service indépendant permettant de cal-
@@ -83,9 +84,7 @@ autres parties aient été correctement traitées, le fait de proposer une solut
 ne pourra qu’améliorer l’évaluation globale du TD.
 Le calcul du coup à jouer peut utiliser n’importe quelle méthode, sachant que
 la plus fréquemment rencontrée dans ce type de problème est le MinMax.
-1qui est déjà une configuration confortable dans le domaine des systèmes embarqués :)
-2navrés de vous décevoir :/
-2
+
 Toute autre approche donnant un résultat évaluable sera considérée avec la
 même attention.
 A noter qu’il n’y a pas de notion chronologique dans la liste ci-dessus, hormis
@@ -156,17 +155,3 @@ considéré). Pas besoin donc de se préoccuper des aspects sécuritaires de
 mise pour des applications en ligne.
 La librairie standard Python contient par ailleurs tout ce qui est nécessaire ici.
 Inutile par conséquent de s’emcombrer d’un framework tiers.
-
-
-## Rendu et notation
-Outre les codes sources développés, une courte vidéo d’une durée de 2 à 4
-minutes est attendue pour présenter les travaux réalisés, incluant les points
-suivants :
-• description et analyse des éléments algorithmiques
-• description du programme
-• description de l’organisation mise en place au sein de l’équipe projet
-(décomposition des tâches, répartition entre les membres, méthodologie
-de travail collaboratif,. . . )
-L’originalité du rendu et les qualités pédagogiques de la vidéo feront partie
-des critères d’évaluation du rendu du projet. Inutile par contre de passer du
-temps à réaliser des effets spéciaux à la James Cameron ;)
