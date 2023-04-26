@@ -19,7 +19,8 @@ class AI {
     this.#transTable = new TranspositionTable(10000);
   }
 
-  //The hydrate method is used to initialize the game state given a string of moves played so far.
+  // La méthode hydrate est utilisée pour initialiser l'état du jeu
+  // en fonction de la chaîne de caractères passée en paramètre.
   hydrate = (totalMoves, full = false) => {
     const moves = full
       ? totalMoves
@@ -49,7 +50,7 @@ class AI {
   };
 
 
-  //The addAIMove method is used to add the AI's move to the game state
+  // La méthode addAIMove est utilisée pour ajouter le coup de l'IA à l'état du jeu.
   addAIMove = (col) => {
     const row = this.standardGrid.findFirstEmpty(col);
     this.standardGrid.add({ x: col, y: row});
@@ -57,22 +58,22 @@ class AI {
     this.playedMoves += col;
   };
 
-  // The computeMove method is used to compute the AI's next move.
-  // If the number of moves played so far is less than 7, the earlyGame method is called.
-  // If it's between 7 and 25 and the game has not been resolved, the midGame method is called.
-  // If it's between 26 and 28 and the game has not been resolved, the endMidGame method is called.
-  // Otherwise, the endGame method is called.
+  // La méthode computeMove est utilisée pour calculer le prochain coup de l'IA.
   computeMove = (board) => {
     this.standardGrid.fillBoard(board);
+    // Si le nombre de coups joués est inférieur à 7, la méthode earlyGame est appelée.
     if (this.position.nbMoves < 7) {
       return this.earlyGame();
     }
+    // S'il est compris entre 7 et 25 et que le jeu n'a pas été résolu, la méthode midGame est appelée.
     if (this.position.nbMoves < 26 && !this.isResolved) {
       return this.midGame();
     }
+    // S'il est compris entre 26 et 28 et que le jeu n'a pas été résolu, la méthode endGame est appelée.
     if (this.position.nbMoves < 29 && !this.isResolved) {
       return this.endMidGame();
     }
+    // Sinon, la méthode endGame est appelée.
     return this.endGame();
   };
 
@@ -144,10 +145,11 @@ class AI {
     return col;
   };
 
-  // The bestColumn method is the heart of the minimax algorithm.
-  // It takes a position argument, which represents the current game state,
-  // as well as alpha, beta, depth, and maxDepth arguments, which are used in the alpha-beta pruning.
-  // It returns the index of the column that leads to the best move according to the minimax algorithm.
+  // Fonction qui retourne la colonne avec le meilleur coup possible
+  // pos: l'état actuel du jeu
+  // alpha et beta: les valeurs de l'algorithme alpha-beta
+  // depth: la profondeur de l'arbre de recherche
+  // clamp: le nombre maximum de mouvements évalués
   bestColumn = (
     pos,
     alpha = -1,
@@ -155,28 +157,35 @@ class AI {
     depth = Infinity,
     clamp = Infinity,
   ) => {
+    // Récupération des prochains mouvements possibles
     const next = pos.possibleNonLosingMoves();
+    // Tri des mouvements en fonction de leur score
     const moves = new MoveSorter(pos.WIDTH);
     for (let i = 0; i < pos.WIDTH; i++) {
       const move = next & pos.columnMask(this.#columnOrder[i]);
+      // Si la colonne donne une victoire, on retourne la colonne
       if (pos.isWinningMove(this.#columnOrder[i])) return this.#columnOrder[i];
       if (move) {
         moves.add(move, pos.moveScore(move), this.#columnOrder[i]);
       }
     }
+    // Limitation du nombre de mouvements évalués
     moves.clamp(clamp);
     const bestMoves = new MoveSorter(pos.WIDTH);
     let nextMove = moves.getNext();
     while (nextMove) {
       const pos2 = pos.clone();
       pos2.play(nextMove.move);
+      // Calcul du score du mouvement actuel
       const score = -this.minmax(pos2, -beta, -alpha, depth, clamp);
+      // Ajout du mouvement dans la liste des meilleurs mouvements possibles
       bestMoves.add(nextMove.move, score, nextMove.col);
       nextMove = moves.getNext();
     }
     const bestMove = bestMoves.getNext().col;
     if (bestMove) return bestMove;
 
+    // Si aucun des mouvements ne donne une victoire, on sélectionne un mouvement possible aléatoire
     const possible = pos.possible();
     const possibleMoves = new MoveSorter(pos.WIDTH);
     for (let i = 0; i < pos.WIDTH; i++) {
