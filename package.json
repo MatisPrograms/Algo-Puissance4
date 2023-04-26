@@ -4,8 +4,8 @@
   "description": "The powerful team Better than the others",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "MonteCarlo": "nodemon index.js",
+    "MiniMax": "nodemon AIToBeThree/indexMinMax.js"
   },
   "author": "",
   "license": "ISC",

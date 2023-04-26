@@ -19,10 +19,13 @@ const board = [
 
 app.listen(3000, () => {
     console.log('Server started on port 3000');
+    console.log("Use http://localhost:3000/move?b=" + "0".repeat(42) + " to start from an empty board");
 });
 
 app.get('/', (req, res) => {
-    res.send('Server is running');
+    res.send({
+        Status: 'Server is running'
+    });
 });
 
 app.get('/move', (req, res) => {
@@ -31,7 +34,9 @@ app.get('/move', (req, res) => {
     if (!urlBoard.valid) {
         if (urlBoard.error === "Game Over")
             res.status(422).json({detail: 'Invalid board : ' + urlBoard.error});
-        else{res.status(400).json({detail: 'Invalid board : ' + urlBoard.error});}
+        else {
+            res.status(400).json({detail: 'Invalid board : ' + urlBoard.error});
+        }
     }
 
     res.status(200).send({
@@ -42,7 +47,7 @@ app.get('/move', (req, res) => {
 
 function parseUrlBoard(board, string) {
     // Check if board is valid
-    if (!board) return {valid:false, error :"no board given"};
+    if (!board) return {valid: false, error: "no board given"};
 
     // Check if string length is valid
     if (string.length !== 42) return {valid: false, error: "The board doesn't have the right size"};
@@ -61,7 +66,7 @@ function parseUrlBoard(board, string) {
     }
 
     // Check if board doesn't have floating pieces
-    if (checkFloatingPieces(board)) return {valid:false,error: "Some pieces are floating, Please don't cheat"};
+    if (checkFloatingPieces(board)) return {valid: false, error: "Some pieces are floating, Please don't cheat"};
 
-    return {valid:!(checkDraw(board) || checkWinner(board)), error: "Game Over"};
+    return {valid: !(checkDraw(board) || checkWinner(board)), error: "Game Over"};
 }
